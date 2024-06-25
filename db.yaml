@@ -1,0 +1,31 @@
+- name: configure db-server
+  hosts: db
+  become: yes
+  vars:
+    login_host: db.guru97s.cloud
+  tasks:
+    - name: installing mysql-server
+      ansible.builtin.dnf:
+        name: mysql-server
+        state: latest
+
+    - name: start and enable MYSQL-server
+      ansible.builtin.service:
+        name: mysqld
+        state: started # to start
+        enabled: yes #to enable
+
+    #check password is already setup or not
+    - name: checking user name and password
+      community.mysql.mysql_info:
+        login_user: root
+        login_password: ExpenseApp@1
+        login_host: "{{login_host}}"
+        filter: version    #to check mysql is installed or not
+      ignore_errors: yes
+      register: mysql_connection_output
+    
+    - name: print output
+      ansible.builtin.debug:
+        msg: "Output: {{mysql_connection_output}}"
+
