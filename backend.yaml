@@ -37,3 +37,18 @@
       ansible.builtin.command: npm install 
       args:
         chdir: /app # first changes its directory, then install npm dependencies
+    
+    - name: copy backend service 
+      ansible.builtin.copy:
+        src: backend.service
+        dest: /etc/systemd/system/backend.service # copy backend.service to dest: /etc/systemd/*
+
+     #Ansible is develped in python
+    #now we are connecting to mysql from ansible which is develped by python
+    #PyMySQL is a dependency for python to connect mysql servers
+    - name: installing python mysql dependencies
+      ansible.builtin.pip: #pip is used to install python dependencies
+        name:
+        - PyMySQL # to connect MySQL db from ansible
+        - cryptography
+        executable:  pip3.9 # pip 3.11 if python version is 3.11
