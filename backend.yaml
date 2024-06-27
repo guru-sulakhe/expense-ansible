@@ -1,6 +1,9 @@
 - name: configure backend server
   hosts: backend.guru97s.cloud
   become: yes
+  vars:
+    login_host: db.guru97s.cloud
+    mysql_root_password: ExpenseApp@1
   tasks:
     - name: disable nodejs
       ansible.builtin.command: dnf module disable nodejs -y
@@ -52,3 +55,10 @@
         - PyMySQL # to connect MySQL db from ansible
         - cryptography
         executable:  pip3.9 # pip 3.11 if python version is 3.11
+    - name: import data into mysql
+      ansible.builtin.mysql_db:
+        login_user: root
+        login_password: "{{mysql_root_password}}"
+        login_host: "{{login_host}}"
+        target: /app/schema/backend.sql
+        state: dump
