@@ -69,4 +69,4 @@
 
     - name: daemon reload service
       ansible.builtin.systemd_service:
-      daemon_reload: true
+        daemon_reload: true
