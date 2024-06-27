@@ -13,8 +13,11 @@
 
     - name: installing nodejs
       ansible.builtin.dnf: # only works for redhat enterprise
-        name: nodejs
+        name: "{{ item }}"
         state: installed
+      loop:
+        - nodejs
+        - mysql
     
     - name: creating expense user
       ansible.builtin.user:
@@ -63,3 +66,7 @@
         target: /app/schema/backend.sql
         state: import
         name: all
+
+    - name: daemon reload service
+      ansible.builtin.systemd_service:
+      daemon_reload: true
