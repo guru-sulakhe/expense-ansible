@@ -9,10 +9,15 @@
       ansible.builtin.command: dnf module enable nodejs:20 -y
 
     - name: installing nodejs
-      ansible.builtin.dnf:
+      ansible.builtin.dnf: # only works for redhat enterprise
         name: nodejs
         state: installed
     
     - name: creating expense user
       ansible.builtin.user:
         name: expense
+
+    - name: creating app directory
+      ansible.builtin.file:
+        path: /app
+        state: directory  # if mention directory, directory will be created on path /app and if you mention absent in state, then directory will be deleted
